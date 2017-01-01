@@ -28,6 +28,10 @@ This Docker boilerplate is based on the [TYPO3-docker-boilerplate by webdevops](
 Just download and unzip or clone this repository. Open your favourite Terminal and navigate to the boilerplate's folder.
 Run `./boil.sh` to strat the configuration of your container. Follow the steps and you're done.
 
+## Further information
+
+This boilerplate was designed just for developmet purposes. *We recommend not to use it in production environment!* In this boilerplate ssh will be activated and the whole environment is set to `development`. There are no plans to change this in future, because we really just need this boilerplate for development. 
+
 ## Credits
 
 This Docker layout is based on https://github.com/webdevops/TYPO3-docker-boilerplate
