@@ -1,0 +1,9 @@
+OS[1]=ubuntu-12.04
+OS[2]=ubuntu-14.04
+OS[3]=ubuntu-15.04
+OS[4]=ubuntu-15.10
+OS[5]=ubuntu-16.04
+OS[6]=centOS-7
+OS[7]=debian-7
+OS[8]=debian-8
+OS[9]=debian-9

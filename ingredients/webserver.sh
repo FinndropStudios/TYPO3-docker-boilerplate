@@ -1,0 +1,2 @@
+WEBSERVER[1]=apache
+WEBSERVER[2]=nginx
