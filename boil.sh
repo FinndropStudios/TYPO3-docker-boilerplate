@@ -112,7 +112,7 @@ function selectMailService {
 # select services to include in image
 #
 function selectServices {
-    echo -e "${ORANGE}Select the Services which should be included:${NC}"
+    echo -e "${ORANGE}Select the services which should be included:${NC}"
     read -r -p "Do you want to include Solr? [y/N] " INCLUDESOLR
     read -r -p "Do you want to include Elasticsearch? [y/N] " INCLUDEELASTICSEARCH
     read -r -p "Do you want to include Redis? [y/N] " INCLUDEREDIS
@@ -126,6 +126,23 @@ function selectServices {
             ;;
     esac
     echo -e "${GREEN}Service selection complete!${NC}"
+}
+
+#
+# select tools to include in image
+#
+function selectTools {
+    echo -e "${ORANGE}Select the tools which should be installed:${NC}"
+    read -r -p "Do you want to install composer? [y/N] " INSTALLCOMPOSER
+    read -r -p "Do you want to install git? [y/N] " INSTALLGIT
+    case ${INSTALLGIT} in
+        [yY][eE][sS]|[yY])
+            read -r -p "Do you want to install git-flow? [y/N] " INSTALLGITFLOW
+            ;;
+        *)
+            ;;
+    esac
+    echo -e "${GREEN}Tool selection complete!${NC}"
 }
 
 #
@@ -249,6 +266,13 @@ function writeDockerCompose {
     echo "      - /tmp/debug/:/tmp/debug/" >> ${file}
     echo "      - ./:/docker/" >> ${file}
     echo "      - ./ssh:/home/application/.ssh" >> ${file}
+    case ${INSTALLOHMYZSH} in
+        [yY][eE][sS]|[yY])
+            echo "      - ./oh-my-zsh/:/app/oh-my-zsh/" >> ${file}
+            ;;
+        *)
+            ;;
+    esac
     echo "    volumes_from:" >> ${file}
     echo "      - storage" >> ${file}
     echo "    cap_add:" >> ${file}
@@ -449,9 +473,70 @@ function writeDockerfile {
     echo "COPY etc/             /opt/docker/etc/" >> ${file}
     echo "COPY provision/       /opt/docker/provision/" >> ${file}
     echo "" >> ${file}
+    echo "RUN apt-get update" >> ${file}
+    echo "RUN apt-get upgrade" >> ${file}
     echo "RUN /opt/docker/bin/provision run --tag bootstrap --role boilerplate-main --role boilerplate-main-development --role boilerplate-deployment \
     && /opt/docker/bin/bootstrap.sh" >> ${file}
     echo "" >> ${file}
+    case ${INSTALLGIT} in
+        [yY][eE][sS]|[yY])
+            GITINSTALLED=true
+            echo "# Install git" >> ${file}
+            echo "RUN sudo apt-get install git-all" >> ${file}
+            echo "" >> ${file}
+            case ${INSTALLGITFLOW} in
+                [yY][eE][sS]|[yY])
+                    echo "# Install git-flow" >> ${file}
+                    echo "RUN wget --no-check-certificate -q  https://raw.github.com/petervanderdoes/gitflow-avh/develop/contrib/gitflow-installer.sh && sudo bash gitflow-installer.sh install stable; rm gitflow-installer.sh" >> ${file}
+                    echo "" >> ${file}
+                    ;;
+                *)
+                    ;;
+            esac
+            ;;
+        *)
+            ;;
+    esac
+
+    case ${INSTALLOHMYZSH} in
+        [yY][eE][sS]|[yY])
+            if [ "${GITINSTALLED}" = false ] ; then
+                echo "# Install git" >> ${file}
+                echo "RUN sudo apt-get install git-all" >> ${file}
+                echo "" >> ${file}
+            fi
+            echo "# Install oh-my-zsh" >> ${file}
+            echo "RUN sudo apt-get update && sudo apt-get install zsh" >> ${file}
+            echo "RUN wget –no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O – | sh" >> ${file}
+            echo "RUN cp oh-my-zsh/.zshrc ~/.zshrc" >> ${file}
+            echo "RUN cp oh-my-zsh/font/* /usr/share/fonts/truetype/*" >> ${file}
+            echo "RUN fc-cache -f -v" >> ${file}
+            echo "RUN chsh -s /bin/zsh" >> ${file}
+            echo "RUN git clone git://github.com/sigurdga/gnome-terminal-colors-solarized.git ~/.solarized" >> ${file}
+            echo "RUN THISDIR=\$(pwd)" >> ${file}
+            echo "RUN cd ~/.solarized" >> ${file}
+            echo "RUN ./solarize" >> ${file}
+            echo "RUN cd ${THISDIR}" >> ${file}
+            # ~/.zshrc
+            # ZSH_THEME="Agnoster"
+            # DEFAULT_USER=application
+            echo "" >> ${file}
+            ;;
+        *)
+            ;;
+    esac
+    case ${INSTALLCOMPOSER} in
+        [yY][eE][sS]|[yY])
+            echo "# Install composer" >> ${file}
+            echo "RUN php -r \"copy('https://getcomposer.org/installer', 'composer-setup.php');\"" >> ${file}
+            echo "RUN php composer-setup.php" >> ${file}
+            echo "RUN php -r \"unlink('composer-setup.php');\"" >> ${file}
+            echo "RUN mv composer.phar /usr/local/bin/composer" >> ${file}
+            echo "" >> ${file}
+            ;;
+        *)
+            ;;
+    esac
     echo "# Activate ssh" >> ${file}
     echo "RUN mkdir -p /home/application/.ssh" >> ${file}
     echo "RUN /opt/docker/bin/control.sh service.enable ssh" >> ${file}
@@ -557,6 +642,7 @@ function main {
         selectDatabase
         selectMailService
         selectServices
+        selectTools
         setPorts
         prepareSsh
         writeDockerCompose
