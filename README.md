@@ -1,6 +1,6 @@
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
-# TYPO3 docker boilerplate
+# TYPO3 Docker Boilerplate
 
 This is an TYPO3 docker boilerplate which will be configured through a step-by-step bash script.
 It also provides an option to setup a blank dummy [TYPO3 8.X instance](https://github.com/FinndropStudios/TYPO3-8.x-boilerplate).
