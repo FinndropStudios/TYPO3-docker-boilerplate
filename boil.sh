@@ -133,14 +133,18 @@ function selectServices {
 #
 function setPorts {
     echo -e "${ORANGE}Set the ports for this container:${NC}"
-    read -r -p "Do you want to see a list of already used ports? [y/N] " response
-    case ${response} in
-        [yY][eE][sS]|[yY])
-            showUsedPorts
-            ;;
-        *)
-            ;;
-    esac
+    if [ -e "~/.dockercontainers" ]; then
+        read -r -p "Do you want to see a list of already used ports? [y/N] " response
+        case ${response} in
+            [yY][eE][sS]|[yY])
+                cat ~/.dockercontainers
+                ;;
+            *)
+                ;;
+        esac
+    else
+        touch ~/.dockercontainers
+    fi
     read -r -p "http port (80): " HTTPPORT
     read -r -p "ftp port (443): " FTPPORT
     read -r -p "ssh port (22): " SSHPORT
@@ -160,9 +164,6 @@ function setPorts {
         *)
             ;;
     esac
-    if [ ! -e "~/.dockercontainers" ]; then
-        touch ~/.dockercontainers
-    fi
     echo -e "$PROJECTNAME\t$HTTPPORT\t$FTPPORT\t$SSHPORT\t$DBPORT\t$ELASTICSEARCHPORT1\tE$DBPORT\t$MAILPORT" >> ~/.dockercontainers
     echo -e "${GREEN}Port configuration complete!${NC}"
 }
