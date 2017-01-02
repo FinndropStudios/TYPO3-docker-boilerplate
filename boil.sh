@@ -181,7 +181,7 @@ function setPorts {
         *)
             ;;
     esac
-    echo -e "$PROJECTNAME\t$HTTPPORT\t$FTPPORT\t$SSHPORT\t$DBPORT\t$ELASTICSEARCHPORT1\tE$DBPORT\t$MAILPORT" >> ~/.dockercontainers
+    echo -e "$PROJECTNAME\t\t-\t$HTTPPORT\t$FTPPORT\t$SSHPORT\t$DBPORT\t$MAILPORT\t$ELASTICSEARCHPORT1\t$ELASTICSEARCHPORT2" >> ~/.dockercontainers
     echo -e "${GREEN}Port configuration complete!${NC}"
 }
 
@@ -473,8 +473,6 @@ function writeDockerfile {
     echo "COPY etc/             /opt/docker/etc/" >> ${file}
     echo "COPY provision/       /opt/docker/provision/" >> ${file}
     echo "" >> ${file}
-    echo "RUN apt-get update" >> ${file}
-    echo "RUN apt-get upgrade" >> ${file}
     echo "RUN /opt/docker/bin/provision run --tag bootstrap --role boilerplate-main --role boilerplate-main-development --role boilerplate-deployment \
     && /opt/docker/bin/bootstrap.sh" >> ${file}
     echo "" >> ${file}

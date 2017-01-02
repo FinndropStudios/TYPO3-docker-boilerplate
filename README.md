@@ -3,7 +3,7 @@
 # TYPO3 docker boilerplate
 
 This is an TYPO3 docker boilerplate which will be configured through a step-by-step bash script.
-Most needed things as composer, git, git-flow-avh, nano and oh-my-zsh will be preinstalled.
+Most needed things as composer, git, git-flow-avh, npm, nano and oh-my-zsh will be preinstalled.
 It also provides an option to setup a blank dummy [TYPO3 8.X instance](https://github.com/FinndropStudios/TYPO3-8.x-boilerplate).
 
 Supports:
@@ -34,7 +34,7 @@ This boilerplate was designed just for developmet purposes. *We recommend not to
 
 ## ToDos
 
-Add installers for git, git-flow-avh, composer, npm, oh-my-zsh
+Add installers for npm
 
 ## Credits
 
