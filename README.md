@@ -3,7 +3,6 @@
 # TYPO3 docker boilerplate
 
 This is an TYPO3 docker boilerplate which will be configured through a step-by-step bash script.
-Most needed things as composer, git, git-flow-avh, npm, nano and oh-my-zsh will be preinstalled.
 It also provides an option to setup a blank dummy [TYPO3 8.X instance](https://github.com/FinndropStudios/TYPO3-8.x-boilerplate).
 
 Supports:
@@ -20,8 +19,15 @@ Supports:
 - FTP server (vsftpd)
 - PhpMyAdmin
 
-This Docker boilerplate is based on the [TYPO3-docker-boilerplate by webdevops](https://github.com/webdevops/TYPO3-docker-boilerplate) and doesn't use too much magic. Configuration of each docker container is available in the `docker/` directory - feel free to customize.
+Preinstalled tools (optional):
 
+- git
+- git-flow-avh
+- composer
+- oh-my-zsh
+- npm
+
+This Docker boilerplate is based on the [TYPO3-docker-boilerplate by webdevops](https://github.com/webdevops/TYPO3-docker-boilerplate) and doesn't use too much magic. Configuration of each docker container is available in the `docker/` directory - feel free to customize.
 
 ## How to
 
@@ -30,11 +36,7 @@ Run `./boil.sh` to start the configuration of your container. Follow the steps a
 
 ## Further information
 
-This boilerplate was designed just for developmet purposes. *We recommend not to use it in production environment!* In this boilerplate ssh will be activated and the whole environment is set to `development`. There are no plans to change this in future, because we really just need this boilerplate for development. 
-
-## ToDos
-
-Add installers for npm
+This boilerplate was designed just for developmet purposes. *We recommend not to use it in production environment!* In this boilerplate ssh will be activated and the whole environment is set to `development`. There are no plans to change this in future, because we really just need this boilerplate for development.
 
 ## Credits
 
