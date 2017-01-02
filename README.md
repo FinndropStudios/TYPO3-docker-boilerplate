@@ -26,6 +26,8 @@ Preinstalled tools (optional):
 - composer
 - oh-my-zsh
 - npm
+- bower (installs npm)
+- gulp (installs npm)
 
 This Docker boilerplate is based on the [TYPO3-docker-boilerplate by webdevops](https://github.com/webdevops/TYPO3-docker-boilerplate) and doesn't use too much magic. Configuration of each docker container is available in the `docker/` directory - feel free to customize.
 
