@@ -509,7 +509,7 @@ function writeDockerfile {
                 echo "" >> ${file}
             fi
             echo "# Install oh-my-zsh" >> ${file}
-            echo "RUN sudo apt-get update && sudo apt-get install zsh" >> ${file}
+            echo "RUN sudo apt-get update && sudo apt-get -y install zsh" >> ${file}
             echo "RUN wget –no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O – | sh" >> ${file}
             echo "RUN cp oh-my-zsh/.zshrc ~/.zshrc" >> ${file}
             echo "RUN cp oh-my-zsh/font/* /usr/share/fonts/truetype/*" >> ${file}
