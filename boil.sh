@@ -581,7 +581,7 @@ function cloneTypo3Boilerplate {
             CLONEDTYPO3BOILERPLATE=true
             ;;
         *)
-            mkdir app/web
+            mkdir app app/web
             echo "<?php" >> app/web/index.php
             echo "phpinfo();" >> app/web/index.php
             ;;
