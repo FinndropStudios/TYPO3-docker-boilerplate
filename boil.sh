@@ -470,9 +470,8 @@ function cloneTypo3Boilerplate {
     case ${response} in
         [yY][eE][sS]|[yY])
             echo -e "Cloning TYPO3 boilerplate into /app"
-            #git clone repourl app
-            #touch app/dockermode
-            #folder ingredients is needed
+            git clone git@github.com:FinndropStudios/TYPO3-8.x-boilerplate.git app
+            touch app/dockermode
             file=app/ingredients/database.sh
             echo "DATABASEUSERNAME=dev" >> ${file}
             echo "DATABASEUSERPASSWORD=dev" >> ${file}
@@ -480,6 +479,7 @@ function cloneTypo3Boilerplate {
             echo "DATABASEHOSTNAME=mysql" >> ${file}
             echo "DATABASEHOSTPORT=" >> ${file}
             echo -e "${GREEN}TYPO3 boilerplate successfully cloned!${NC}"
+            CLONEDTYPO3BOILERPLATE=true
             ;;
         *)
             mkdir web web/app
@@ -494,8 +494,6 @@ function startContainer {
     read -r -p $'\e[33mDo you want to run the container now (make sure docker is running)?\e[0m [y/N] ' response
     case ${response} in
         [yY][eE][sS]|[yY])
-            # start
-            # after starting show info about ssh and ssh into container if wanted
             docker-compose up -d
             ;;
         *)
@@ -515,6 +513,11 @@ function startContainer {
     echo -e "${ORANGE}You can ssh into your container using the following command:${NC}"
     echo -e "ssh -p ${SSHPORT} application@localhost"
     echo -e ""
+    if [ "${CLONEDTYPO3BOILERPLATE}" = true ] ; then
+        echo -e "${ORANGE}Instructions for TYPO3 boilerplate:${NC}"
+        echo -e "ssh into your container, navigate to /app/ and run boil.sh"
+        echo -e ""
+    fi
     echo -e "${GREEN}Have fun!${NC}"
     echo -e ""
     echo -e ""

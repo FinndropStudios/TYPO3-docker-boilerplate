@@ -32,6 +32,10 @@ Run `./boil.sh` to start the configuration of your container. Follow the steps a
 
 This boilerplate was designed just for developmet purposes. *We recommend not to use it in production environment!* In this boilerplate ssh will be activated and the whole environment is set to `development`. There are no plans to change this in future, because we really just need this boilerplate for development. 
 
+## ToDos
+
+Add installers for git, git-flow-avh, composer, npm, oh-my-zsh
+
 ## Credits
 
 This Docker layout is based on https://github.com/webdevops/TYPO3-docker-boilerplate
