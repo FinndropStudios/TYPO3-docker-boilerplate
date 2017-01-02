@@ -142,6 +142,8 @@ function selectTools {
         *)
             ;;
     esac
+    #read -r -p "Do you want to install oh-my-zsh? [y/N] " INSTALLOHMYZSH
+    read -r -p "Do you want to install npm? [y/N] " INSTALLNPM
     echo -e "${GREEN}Tool selection complete!${NC}"
 }
 
@@ -533,6 +535,16 @@ function writeDockerfile {
             echo "RUN php composer-setup.php" >> ${file}
             echo "RUN php -r \"unlink('composer-setup.php');\"" >> ${file}
             echo "RUN mv composer.phar /usr/local/bin/composer" >> ${file}
+            echo "" >> ${file}
+            ;;
+        *)
+            ;;
+    esac
+    case ${INSTALLNPM} in
+        [yY][eE][sS]|[yY])
+            echo "# Install npm" >> ${file}
+            echo "sudo apt-get -y install nodejs" >> ${file}
+            echo "sudo apt-get -y install npm" >> ${file}
             echo "" >> ${file}
             ;;
         *)
