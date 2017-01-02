@@ -569,7 +569,9 @@ function cloneTypo3Boilerplate {
             CLONEDTYPO3BOILERPLATE=true
             ;;
         *)
-            mkdir web web/app
+            mkdir app/web
+            echo "<?php" >> app/web/index.php
+            echo "phpinfo();" >> app/web/index.php
             ;;
     esac
 }
