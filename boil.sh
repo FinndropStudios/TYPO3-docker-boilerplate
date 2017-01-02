@@ -141,21 +141,21 @@ function setPorts {
         *)
             ;;
     esac
-    read -r -p "http port: " HTTPPORT
-    read -r -p "ftp port: " FTPPORT
-    read -r -p "ssh port: " SSHPORT
-    read -r -p "database port: " DBPORT
+    read -r -p "http port (80): " HTTPPORT
+    read -r -p "ftp port (443): " FTPPORT
+    read -r -p "ssh port (22): " SSHPORT
+    read -r -p "database port (3306): " DBPORT
     case ${INCLUDEELASTICSEARCH} in
         [yY][eE][sS]|[yY])
-            read -r -p "Elasticsearch port 1: " ELASTICSEARCHPORT1
-            read -r -p "Elasticsearch port 2: " ELASTICSEARCHPORT2
+            read -r -p "Elasticsearch port 1 (9200): " ELASTICSEARCHPORT1
+            read -r -p "Elasticsearch port 2 (9300): " ELASTICSEARCHPORT2
             ;;
         *)
             ;;
     esac
     case ${SELECTEDMAILSERVICE} in
         1)
-            read -r -p "mail port: " MAILPORT
+            read -r -p "mail port (8025): " MAILPORT
             ;;
         *)
             ;;
@@ -366,7 +366,7 @@ function writeDockerCompose {
         1)
             echo "  mail:" >> ${file}
             echo "    container_name: mail" >> ${file}
-            echo "      image: mailhog/mailhog" >> ${file}
+            echo "    image: mailhog/mailhog" >> ${file}
             echo "    ports:" >> ${file}
             echo "      - ${MAILPORT}:8025" >> ${file}
             echo "    environment:" >> ${file}
