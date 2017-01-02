@@ -266,7 +266,7 @@ function writeDockerCompose {
             echo "    container_name: database" >> ${file}
             echo "    build:" >> ${file}
             echo "      context: docker/mysql/" >> ${file}
-            echo "      dockerfile: ${DB[$SELECTEDDATABASE]}.Dockerfile" >> ${file}
+            echo "      dockerfile: ${DATABASE[$SELECTEDDATABASE]}.Dockerfile" >> ${file}
             echo "    ports:" >> ${file}
             echo "      - ${DBPORT}:3306" >> ${file}
             echo "    volumes_from:" >> ${file}
@@ -282,7 +282,7 @@ function writeDockerCompose {
             echo "    container_name: database" >> ${file}
             echo "    build:" >> ${file}
             echo "      context: docker/postgres/" >> ${file}
-            echo "      dockerfile: ${DB[$SELECTEDDATABASE]}.Dockerfile" >> ${file}
+            echo "      dockerfile: ${DATABASE[$SELECTEDDATABASE]}.Dockerfile" >> ${file}
             echo "    ports:" >> ${file}
             echo "      - ${DBPORT}:5432" >> ${file}
             echo "    volumes_from:" >> ${file}
