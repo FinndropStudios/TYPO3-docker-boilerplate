@@ -452,6 +452,7 @@ function writeDockerCompose {
             ;;
     esac
     echo "  storage:" >> ${file}
+    echo "    container_name: storage" >> ${file}
     echo "    build:" >> ${file}
     echo "      context: docker/storage/" >> ${file}
     echo "    volumes:" >> ${file}
@@ -473,6 +474,8 @@ function writeDockerfile {
     echo "COPY etc/             /opt/docker/etc/" >> ${file}
     echo "COPY provision/       /opt/docker/provision/" >> ${file}
     echo "" >> ${file}
+    echo "RUN sudo apt-get update" >> ${file}
+    echo "RUN sudo apt-get -y upgrade" >> ${file}
     echo "RUN /opt/docker/bin/provision run --tag bootstrap --role boilerplate-main --role boilerplate-main-development --role boilerplate-deployment \
     && /opt/docker/bin/bootstrap.sh" >> ${file}
     echo "" >> ${file}
@@ -480,7 +483,7 @@ function writeDockerfile {
         [yY][eE][sS]|[yY])
             GITINSTALLED=true
             echo "# Install git" >> ${file}
-            echo "RUN sudo apt-get install git-all" >> ${file}
+            echo "RUN sudo apt-get -y install git-all" >> ${file}
             echo "" >> ${file}
             case ${INSTALLGITFLOW} in
                 [yY][eE][sS]|[yY])
@@ -596,6 +599,9 @@ function startContainer {
     echo -e ""
     echo -e "${ORANGE}You can ssh into your container using the following command:${NC}"
     echo -e "ssh -p ${SSHPORT} application@localhost"
+    echo -e ""
+    echo -e "${ORANGE}Access your new project:${NC}"
+    echo -e "Type localhost:${HTTPPORT} in your favourite browser"
     echo -e ""
     if [ "${CLONEDTYPO3BOILERPLATE}" = true ] ; then
         echo -e "${ORANGE}Instructions for TYPO3 boilerplate:${NC}"
