@@ -34,6 +34,16 @@ This Docker boilerplate is based on the [TYPO3-docker-boilerplate by webdevops](
 Just download and unzip or clone this repository. Open your favourite Terminal and navigate to the boilerplate's folder.
 Run `./boil.sh` to start the configuration of your container. Follow the steps and you're done.
 
+## Useful commands
+
+- `ssh -p $SSHPORT application@localhost` Login to your container using ssh
+- `docker-compose up -d` run your container
+- `docker-compose up -d --build` rebuild your container
+- `docker-compose stop` stop your container
+- `docker rm $CONTAINERNAME` remove container
+- `docker rmi $CONTAINERNAME` remove image
+- `docker ps -a` show running containers
+
 ## Further information
 
 This boilerplate was designed just for developmet purposes. *We recommend not to use it in production environment!* In this boilerplate ssh will be activated and the whole environment is set to `development`. There are no plans to change this in future, because we really just need this boilerplate for development.

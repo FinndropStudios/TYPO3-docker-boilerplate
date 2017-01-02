@@ -142,7 +142,7 @@ function selectTools {
         *)
             ;;
     esac
-    #read -r -p "Do you want to install oh-my-zsh? [y/N] " INSTALLOHMYZSH
+    read -r -p "Do you want to install oh-my-zsh? [y/N] " INSTALLOHMYZSH
     read -r -p "Do you want to install npm? [y/N] " INSTALLNPM
     echo -e "${GREEN}Tool selection complete!${NC}"
 }
