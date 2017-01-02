@@ -144,6 +144,29 @@ function selectTools {
     esac
     read -r -p "Do you want to install oh-my-zsh? [y/N] " INSTALLOHMYZSH
     read -r -p "Do you want to install npm? [y/N] " INSTALLNPM
+    case ${INSTALLNPM} in
+        [yY][eE][sS]|[yY])
+            INSTALLNPM=true
+            ;;
+        *)
+            ;;
+    esac
+    read -r -p "Do you want to install bower? [y/N] " INSTALLBOWER
+    case ${INSTALLBOWER} in
+        [yY][eE][sS]|[yY])
+            INSTALLBOWER=true
+            ;;
+        *)
+            ;;
+    esac
+    read -r -p "Do you want to install gulp? [y/N] " INSTALLGULP
+    case ${INSTALLGULP} in
+        [yY][eE][sS]|[yY])
+            INSTALLGULP=true
+            ;;
+        *)
+            ;;
+    esac
     echo -e "${GREEN}Tool selection complete!${NC}"
 }
 
@@ -520,9 +543,6 @@ function writeDockerfile {
             echo "RUN cd ~/.solarized" >> ${file}
             echo "RUN ./solarize" >> ${file}
             echo "RUN cd ${THISDIR}" >> ${file}
-            # ~/.zshrc
-            # ZSH_THEME="Agnoster"
-            # DEFAULT_USER=application
             echo "" >> ${file}
             ;;
         *)
@@ -540,16 +560,23 @@ function writeDockerfile {
         *)
             ;;
     esac
-    case ${INSTALLNPM} in
-        [yY][eE][sS]|[yY])
-            echo "# Install npm" >> ${file}
-            echo "sudo apt-get -y install nodejs" >> ${file}
-            echo "sudo apt-get -y install npm" >> ${file}
-            echo "" >> ${file}
-            ;;
-        *)
-            ;;
-    esac
+    if [ "${INSTALLNPM}" = true ] || [ "${INSTALLBOWER}" = true ] || [ "${INSTALLGULP}" = true ]; then
+        echo "# Install npm" >> ${file}
+        echo "sudo apt-get -y install nodejs" >> ${file}
+        echo "sudo apt-get -y install npm" >> ${file}
+        echo "" >> ${file}
+        NPMINSTALLED=true
+    fi
+    if [ "${INSTALLBOWER}" = true ]; then
+        echo "# Install bower" >> ${file}
+        echo "sudo npm install bower" >> ${file}
+        echo "" >> ${file}
+    fi
+    if [ "${INSTALLGULP}" = true ]; then
+        echo "# Install gulp" >> ${file}
+        echo "sudo npm install gulp" >> ${file}
+        echo "" >> ${file}
+    fi
     echo "# Activate ssh" >> ${file}
     echo "RUN mkdir -p /home/application/.ssh" >> ${file}
     echo "RUN /opt/docker/bin/control.sh service.enable ssh" >> ${file}
