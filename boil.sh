@@ -37,8 +37,10 @@ function setProjectName {
 #
 function setVirtualHost {
     read -r -p "Please set the virtual hostname (without tld): " VIRTUALHOSTNAME
-    if [ -e "~/.dockercontainers.vhosts" ]; then
-        readarray VIRTUALHOSTS < ~.dockercontainers.vhosts
+    if [ -e "$HOME/.dockercontainers.vhosts" ]; then
+        oifs=$IFS
+        IFS=$'\n' VIRTUALHOSTS=( $(< ~/.dockercontainers.vhosts) )
+        IFS=$oifs
         case "${VIRTUALHOSTS[@]}" in
             *"${VIRTUALHOSTNAME}"*)
                 echo -e "${RED}This hostname is already in use${NC}"
