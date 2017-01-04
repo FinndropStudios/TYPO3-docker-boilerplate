@@ -543,7 +543,7 @@ function writeDockerfile {
             echo "RUN fc-cache -f -v" >> ${file}
             echo "RUN chsh -s /bin/zsh" >> ${file}
             echo "RUN git clone git://github.com/sigurdga/gnome-terminal-colors-solarized.git ~/.solarized" >> ${file}
-            echo "RUN THISDIR=\$(pwd)" >> ${file}
+            echo "RUN THISDIR=\"$pwd\" >> ${file}
             echo "RUN cd ~/.solarized" >> ${file}
             echo "RUN ./solarize" >> ${file}
             echo "RUN cd ${THISDIR}" >> ${file}
