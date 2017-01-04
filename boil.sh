@@ -32,12 +32,32 @@ function setProjectName {
     read -r -p "Please set the projects name: " PROJECTNAME
 }
 
-
 #
 # set virtualhost
 #
 function setVirtualHost {
     read -r -p "Please set the virtual hostname (without tld): " VIRTUALHOSTNAME
+    if [ -e "~/.dockercontainers.vhosts" ]; then
+        readarray VIRTUALHOSTS < ~.dockercontainers.vhosts
+        case "${VIRTUALHOSTS[@]}" in
+            *"${VIRTUALHOSTNAME}"*)
+                echo -e "${RED}This hostname is already in use${NC}"
+                setVirtualHost
+                ;;
+            *)
+                saveVirtualHost
+                ;;
+        esac
+    else
+        saveVirtualHost
+    fi
+}
+
+#
+# save virtualhost in .dockercontainers.vhosts
+#
+function saveVirtualHost {
+    echo "${VIRTUALHOSTNAME}" >> ~/.dockercontainers.vhosts
 }
 
 #
