@@ -113,8 +113,8 @@ function selectMailService {
 #
 function selectServices {
     echo -e "${ORANGE}Select the services which should be included:${NC}"
-    read -r -p "Do you want to include Solr? [y/N] " INCLUDESOLR
-    read -r -p "Do you want to include Elasticsearch? [y/N] " INCLUDEELASTICSEARCH
+    read -r -p "Do you want to include Solr (needs configuration)? [y/N] " INCLUDESOLR
+    read -r -p "Do you want to include Elasticsearch (needs configuration)? [y/N] " INCLUDEELASTICSEARCH
     read -r -p "Do you want to include Redis? [y/N] " INCLUDEREDIS
     read -r -p "Do you want to include Memcached? [y/N] " INCLUDEREDIS
     read -r -p "Do you want to include FTP? [y/N] " INCLUDEREDIS
@@ -207,6 +207,7 @@ function setPorts {
             ;;
     esac
     echo -e "$PROJECTNAME\t\t-\t$HTTPPORT\t$FTPPORT\t$SSHPORT\t$DBPORT\t$MAILPORT\t$ELASTICSEARCHPORT1\t$ELASTICSEARCHPORT2" >> ~/.dockercontainers
+    PROJECTID=$(wc -l < "~/.dockercontainers")
     echo -e "${GREEN}Port configuration complete!${NC}"
 }
 
@@ -233,7 +234,7 @@ function writeDockerCompose {
     echo "version: '2'" >> ${file}
     echo "services:" >> ${file}
     echo "  app:" >> ${file}
-    echo "    container_name: app" >> ${file}
+    echo "    container_name: app_${PROJECTID}" >> ${file}
     echo "    build:" >> ${file}
     echo "      context: ." >> ${file}
     echo "      dockerfile: Dockerfile.development" >> ${file}
@@ -313,7 +314,7 @@ function writeDockerCompose {
     case ${SELECTEDDATABASE} in
         [1-8]*)
             echo "  mysql:" >> ${file}
-            echo "    container_name: database" >> ${file}
+            echo "    container_name: database_${PROJECTID}" >> ${file}
             echo "    build:" >> ${file}
             echo "      context: docker/mysql/" >> ${file}
             echo "      dockerfile: ${DATABASE[$SELECTEDDATABASE]}.Dockerfile" >> ${file}
@@ -329,7 +330,7 @@ function writeDockerCompose {
             ;;
         *)
             echo "  postgres:" >> ${file}
-            echo "    container_name: database" >> ${file}
+            echo "    container_name: database_${PROJECTID}" >> ${file}
             echo "    build:" >> ${file}
             echo "      context: docker/postgres/" >> ${file}
             echo "      dockerfile: ${DATABASE[$SELECTEDDATABASE]}.Dockerfile" >> ${file}
@@ -345,7 +346,7 @@ function writeDockerCompose {
     case ${INCLUDESOLR} in
         [yY][eE][sS]|[yY])
             echo "  solr:" >> ${file}
-            echo "    container_name: solr" >> ${file}
+            echo "    container_name: solr_${PROJECTID}" >> ${file}
             echo "    build:" >> ${file}
             echo "      context: docker/solr/" >> ${file}
             echo "    volumes_from:" >> ${file}
@@ -364,7 +365,7 @@ function writeDockerCompose {
     case ${INCLUDEELASTICSEARCH} in
         [yY][eE][sS]|[yY])
             echo "  elasticsearch:" >> ${file}
-            echo "    container_name: elasticsearch" >> ${file}
+            echo "    container_name: elasticsearch_${PROJECTID}" >> ${file}
             echo "    build:" >> ${file}
             echo "      context: docker/elasticsearch/" >> ${file}
             echo "    ports:" >> ${file}
@@ -385,7 +386,7 @@ function writeDockerCompose {
     case ${INCLUDEREDIS} in
         [yY][eE][sS]|[yY])
             echo "  redis:" >> ${file}
-            echo "    container_name: redis" >> ${file}
+            echo "    container_name: redis_${PROJECTID}" >> ${file}
             echo "    build:" >> ${file}
             echo "      context: docker/redis/" >> ${file}
             echo "    volumes_from:" >> ${file}
@@ -400,7 +401,7 @@ function writeDockerCompose {
     case ${INCLUDEMEMCACHED} in
         [yY][eE][sS]|[yY])
             echo "  memcached:" >> ${file}
-            echo "    container_name: memcached" >> ${file}
+            echo "    container_name: memcached_${PROJECTID}" >> ${file}
             echo "    build:" >> ${file}
             echo "      context: docker/memcached/" >> ${file}
             echo "    volumes_from:" >> ${file}
@@ -415,7 +416,7 @@ function writeDockerCompose {
     case ${SELECTEDMAILSERVICE} in
         1)
             echo "  mail:" >> ${file}
-            echo "    container_name: mail" >> ${file}
+            echo "    container_name: mail_${PROJECTID}" >> ${file}
             echo "    image: mailhog/mailhog" >> ${file}
             echo "    ports:" >> ${file}
             echo "      - ${MAILPORT}:8025" >> ${file}
@@ -425,7 +426,7 @@ function writeDockerCompose {
             ;;
         2)
             echo "  mail:" >> ${file}
-            echo "    container_name: mail" >> ${file}
+            echo "    container_name: mail_${PROJECTID}" >> ${file}
             echo "    image: schickling/mailcatcher" >> ${file}
             echo "    environment:" >> ${file}
             echo "      - VIRTUAL_HOST=mail.boilerplate.docker" >> ${file}
@@ -433,7 +434,7 @@ function writeDockerCompose {
             ;;
         3)
             echo "  mail:" >> ${file}
-            echo "    container_name: mail" >> ${file}
+            echo "    container_name: mail_${PROJECTID}" >> ${file}
             echo "      image: webdevops/mail-sandbox" >> ${file}
             echo "    environment:" >> ${file}
             echo "      - VIRTUAL_HOST=mail.boilerplate.docker" >> ${file}
@@ -445,7 +446,7 @@ function writeDockerCompose {
     case ${INCLUDEFTP} in
         [yY][eE][sS]|[yY])
             echo "  ftp:" >> ${file}
-            echo "    container_name: ftp" >> ${file}
+            echo "    container_name: ftp_${PROJECTID}" >> ${file}
             echo "    build:" >> ${file}
             echo "      context: docker/vsftpd/" >> ${file}
             echo "    volumes_from:" >> ${file}
@@ -462,7 +463,7 @@ function writeDockerCompose {
     case ${INCLUDEPHPMYADMIN} in
         [yY][eE][sS]|[yY])
             echo "  phpmyadmin:" >> ${file}
-            echo "    container_name: phpmyadmin" >> ${file}
+            echo "    container_name: phpmyadmin_${PROJECTID}" >> ${file}
             echo "    image: phpmyadmin/phpmyadmin" >> ${file}
             echo "    links:" >> ${file}
             echo "      - mysql" >> ${file}
@@ -477,7 +478,7 @@ function writeDockerCompose {
             ;;
     esac
     echo "  storage:" >> ${file}
-    echo "    container_name: storage" >> ${file}
+    echo "    container_name: storage_${PROJECTID}" >> ${file}
     echo "    build:" >> ${file}
     echo "      context: docker/storage/" >> ${file}
     echo "    volumes:" >> ${file}
@@ -501,6 +502,7 @@ function writeDockerfile {
     echo "" >> ${file}
     echo "RUN sudo apt-get update" >> ${file}
     echo "RUN sudo apt-get -y upgrade" >> ${file}
+    echo "RUN sudo apt-get -y install apt-utils" >> ${file}
     echo "RUN /opt/docker/bin/provision run --tag bootstrap --role boilerplate-main --role boilerplate-main-development --role boilerplate-deployment \
     && /opt/docker/bin/bootstrap.sh" >> ${file}
     echo "" >> ${file}
@@ -562,19 +564,19 @@ function writeDockerfile {
     esac
     if [ "${INSTALLNPM}" = true ] || [ "${INSTALLBOWER}" = true ] || [ "${INSTALLGULP}" = true ]; then
         echo "# Install npm" >> ${file}
-        echo "sudo apt-get -y install nodejs" >> ${file}
-        echo "sudo apt-get -y install npm" >> ${file}
+        echo "RUN sudo apt-get -y install nodejs" >> ${file}
+        echo "RUN sudo apt-get -y install npm" >> ${file}
         echo "" >> ${file}
         NPMINSTALLED=true
     fi
     if [ "${INSTALLBOWER}" = true ]; then
         echo "# Install bower" >> ${file}
-        echo "sudo npm install bower" >> ${file}
+        echo "RUN sudo npm install bower" >> ${file}
         echo "" >> ${file}
     fi
     if [ "${INSTALLGULP}" = true ]; then
         echo "# Install gulp" >> ${file}
-        echo "sudo npm install gulp" >> ${file}
+        echo "RUN sudo npm install gulp" >> ${file}
         echo "" >> ${file}
     fi
     echo "# Activate ssh" >> ${file}
