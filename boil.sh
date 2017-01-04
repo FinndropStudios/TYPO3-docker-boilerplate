@@ -209,6 +209,7 @@ function setPorts {
     esac
     echo -e "$PROJECTNAME\t\t-\t$HTTPPORT\t$FTPPORT\t$SSHPORT\t$DBPORT\t$MAILPORT\t$ELASTICSEARCHPORT1\t$ELASTICSEARCHPORT2" >> ~/.dockercontainers
     PROJECTID=$(cat ~/.dockercontainers | wc -l)
+    PROJECTID="$(echo -e "${PROJECTID}" | tr -d '[:space:]')"
     echo -e "${GREEN}Port configuration complete!${NC}"
 }
 
@@ -301,7 +302,7 @@ function writeDockerCompose {
             ;;
     esac
     echo "    volumes_from:" >> ${file}
-    echo "      - storage_${PROJECTID}" >> ${file}
+    echo "      - storage" >> ${file}
     echo "    cap_add:" >> ${file}
     echo "      - SYS_PTRACE" >> ${file}
     echo "    privileged: true" >> ${file}
@@ -322,7 +323,7 @@ function writeDockerCompose {
             echo "    ports:" >> ${file}
             echo "      - ${DBPORT}:3306" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage_${PROJECTID}" >> ${file}
+            echo "      - storage" >> ${file}
             echo "    volumes:" >> ${file}
             echo "      - /tmp/debug/:/tmp/debug/" >> ${file}
             echo "    env_file:" >> ${file}
@@ -338,7 +339,7 @@ function writeDockerCompose {
             echo "    ports:" >> ${file}
             echo "      - ${DBPORT}:5432" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage_${PROJECTID}" >> ${file}
+            echo "      - storage" >> ${file}
             echo "    env_file:" >> ${file}
             echo "      - etc/environment.yml" >> ${file}
             echo "      - etc/environment.development.yml" >> ${file}
@@ -351,7 +352,7 @@ function writeDockerCompose {
             echo "    build:" >> ${file}
             echo "      context: docker/solr/" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage_${PROJECTID}" >> ${file}
+            echo "      - storage" >> ${file}
             echo "    env_file:" >> ${file}
             echo "      - etc/environment.yml" >> ${file}
             echo "      - etc/environment.development.yml" >> ${file}
@@ -406,7 +407,7 @@ function writeDockerCompose {
             echo "    build:" >> ${file}
             echo "      context: docker/memcached/" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage_${PROJECTID}" >> ${file}
+            echo "      - storage" >> ${file}
             echo "    env_file:" >> ${file}
             echo "      - etc/environment.yml" >> ${file}
             echo "      - etc/environment.development.yml" >> ${file}
@@ -451,7 +452,7 @@ function writeDockerCompose {
             echo "    build:" >> ${file}
             echo "      context: docker/vsftpd/" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage_${PROJECTID}" >> ${file}
+            echo "      - storage" >> ${file}
             echo "    volumes:" >> ${file}
             echo "      - ./:/application/" >> ${file}
             echo "    env_file:" >> ${file}
@@ -483,7 +484,7 @@ function writeDockerCompose {
     echo "    build:" >> ${file}
     echo "      context: docker/storage/" >> ${file}
     echo "    volumes:" >> ${file}
-    echo "      - /storage_${PROJECTID}" >> ${file}
+    echo "      - /storage" >> ${file}
     echo -e "${GREEN}Written ${file}!${NC}"
 }
 
@@ -595,27 +596,27 @@ function writeDockerfile {
 # clone typo3-boilerplate repository into /app
 #
 function cloneTypo3Boilerplate {
-    read -r -p $'\e[33mDo you want to clone the TYPO3 boilerplate?\e[0m [y/N] ' response
-    case ${response} in
-        [yY][eE][sS]|[yY])
-            echo -e "Cloning TYPO3 boilerplate into /app"
-            git clone git@github.com:FinndropStudios/TYPO3-8.x-boilerplate.git app
-            touch app/dockermode
-            file=app/ingredients/database.sh
-            echo "DATABASEUSERNAME=dev" >> ${file}
-            echo "DATABASEUSERPASSWORD=dev" >> ${file}
-            echo "DATABASENAME=typo3" >> ${file}
-            echo "DATABASEHOSTNAME=mysql" >> ${file}
-            echo "DATABASEHOSTPORT=" >> ${file}
-            echo -e "${GREEN}TYPO3 boilerplate successfully cloned!${NC}"
-            CLONEDTYPO3BOILERPLATE=true
-            ;;
-        *)
+    #read -r -p $'\e[33mDo you want to clone the TYPO3 boilerplate?\e[0m [y/N] ' response
+    #case ${response} in
+    #    [yY][eE][sS]|[yY])
+    #        echo -e "Cloning TYPO3 boilerplate into /app"
+    #        git clone git@github.com:FinndropStudios/TYPO3-8.x-boilerplate.git app
+    #        touch app/dockermode
+    #        file=app/ingredients/database.sh
+    #        echo "DATABASEUSERNAME=dev" >> ${file}
+    #        echo "DATABASEUSERPASSWORD=dev" >> ${file}
+    #        echo "DATABASENAME=typo3" >> ${file}
+    #        echo "DATABASEHOSTNAME=mysql" >> ${file}
+    #        echo "DATABASEHOSTPORT=" >> ${file}
+    #        echo -e "${GREEN}TYPO3 boilerplate successfully cloned!${NC}"
+    #        CLONEDTYPO3BOILERPLATE=true
+    #        ;;
+    #    *)
             mkdir app app/web
             echo "<?php" >> app/web/index.php
             echo "phpinfo();" >> app/web/index.php
-            ;;
-    esac
+    #        ;;
+    #esac
 }
 
 #

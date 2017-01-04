@@ -3,9 +3,12 @@
 # TYPO3 Docker Boilerplate
 
 This is a TYPO3 docker boilerplate which will be configured through a step-by-step bash script.
-It also provides an option to setup a blank dummy [TYPO3 8.X instance](https://github.com/FinndropStudios/TYPO3-8.x-boilerplate).
 
-Supports:
+## upcoming (WIP):
+
+~It also provides an option to setup a blank dummy [TYPO3 8.X instance](https://github.com/FinndropStudios/TYPO3-8.x-boilerplate).~
+
+## Supports:
 
 - Nginx or Apache HTTPd
 - PHP-FPM (with Xdebug)
@@ -19,7 +22,7 @@ Supports:
 - FTP server (vsftpd)
 - PhpMyAdmin
 
-Preinstalled tools (optional):
+## Preinstalled tools (optional):
 
 - git
 - git-flow-avh
@@ -28,8 +31,6 @@ Preinstalled tools (optional):
 - npm
 - bower (installs npm)
 - gulp (installs npm)
-
-This Docker boilerplate is based on the [TYPO3-docker-boilerplate by webdevops](https://github.com/webdevops/TYPO3-docker-boilerplate) and doesn't use too much magic. Configuration of each docker container is available in the `docker/` directory - feel free to customize.
 
 ## How to
 
@@ -48,7 +49,7 @@ Run `./boil.sh` to start the configuration of your container. Follow the steps a
 
 ## Further information
 
-This boilerplate was designed just for developmet purposes. *We recommend not to use it in production environment!* In this boilerplate ssh will be activated and the whole environment is set to `development`. There are no plans to change this in future, because we really just need this boilerplate for development.
+This Docker boilerplate is based on the [TYPO3-docker-boilerplate by webdevops](https://github.com/webdevops/TYPO3-docker-boilerplate) and doesn't use too much magic. Configuration of each docker container is available in the `docker/` directory - feel free to customize. This boilerplate was designed just for developmet purposes. *We recommend not to use it in production environment!* In this boilerplate ssh will be activated and the whole environment is set to `development`. There are no plans to change this in future, because we really just need this boilerplate for development.
 
 ## Credits
 
