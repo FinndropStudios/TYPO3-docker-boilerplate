@@ -29,14 +29,14 @@ function cleanup {
 # set name of project
 #
 function setProjectName {
-    read -r -p "Please set the projects name: " PROJECTNAME
+    read -r -p $'\e[33mPlease set the projects name:\e[0m ' PROJECTNAME
 }
 
 #
 # set virtualhost
 #
 function setVirtualHost {
-    read -r -p "Please set the virtual hostname (without tld): " VIRTUALHOSTNAME
+    read -r -p $'\e[33mPlease set the virtual hostname (without tld):\e[0m ' VIRTUALHOSTNAME
     if [ -e "$HOME/.dockercontainers.vhosts" ]; then
         oifs=$IFS
         IFS=$'\n' VIRTUALHOSTS=( $(< ~/.dockercontainers.vhosts) )
@@ -294,7 +294,6 @@ function setPorts {
 #
 function prepareSsh {
     echo -e "${ORANGE}Expose your public key to container:${NC}"
-    # cat ~/.ssh/id_rsa.pub
     if [ ! -e "$HOME/.ssh/id_rsa.pub" ]; then
         ssh-keygen -b 2048 -t rsa -f "" -q -N ""
     fi
