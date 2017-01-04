@@ -13,6 +13,12 @@ It also provides an option to setup a blank dummy [TYPO3 8.X instance](https://g
 - include [TYPO3-8.x-boilerplate](https://github.com/FinndropStudios/TYPO3-8.x-boilerplate)
 - include virtualhosts functionality through reverse proxy
 
+## Todo:
+
+- Fix npm install
+- Fix bower install
+- Fix gulp install
+
 ## Supports:
 
 - Nginx or Apache HTTPd
