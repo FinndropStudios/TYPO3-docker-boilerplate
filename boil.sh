@@ -30,7 +30,14 @@ function cleanup {
 #
 function setProjectName {
     read -r -p "Please set the projects name: " PROJECTNAME
-    #read -r -p "Please set the shortname (alpha-numerical, lowercase, unique): " PROJECTSHORTNAME
+}
+
+
+#
+# set virtualhost
+#
+function setVirtualHost {
+    read -r -p "Please set the virtual hostname (without tld): " VIRTUALHOSTNAME
 }
 
 #
@@ -207,7 +214,54 @@ function setPorts {
         *)
             ;;
     esac
-    echo -e "$PROJECTNAME\t\t-\t$HTTPPORT\t$FTPPORT\t$SSHPORT\t$DBPORT\t$MAILPORT\t$ELASTICSEARCHPORT1\t$ELASTICSEARCHPORT2" >> ~/.dockercontainers
+    echo -e "${PROJECTNAME}\t\t-\t${HTTPPORT}\t${FTPPORT}\t${SSHPORT}\t${DBPORT}\t${MAILPORT}\t${ELASTICSEARCHPORT1}\t${ELASTICSEARCHPORT2}" >> ~/.dockercontainers
+    echo -e "Projectname: ${PROJECTNAME}" >> .containerconfig
+    echo -e "" >> .containerconfig
+    echo -e "http port:               \t\t${HTTPPORT}" >> .containerconfig
+    echo -e "ftp port:                \t\t${FTPPORT}" >> .containerconfig
+    echo -e "ssh port:                \t\t${SSHPORT}" >> .containerconfig
+    echo -e "database port:           \t\t${DBPORT}" >> .containerconfig
+    if ! [ -z "${MAILPORT}" ]; then
+        echo -e "mail port:           \t\t${MAILPORT}" >> .containerconfig
+    fi
+    if ! [ -z "${ELASTICSEARCHPORT1}" ]; then
+        echo -e "elasticsearch port 1:\t\t${ELASTICSERCHPORT1}" >> .containerconfig
+    fi
+    if ! [ -z "${ELASTICSEARCHPORT2}" ]; then
+        echo -e "elasticsearch port 2:\t\t${ELASTICSERCHPORT2}" >> .containerconfig
+    fi
+    echo -e "" >> .containerconfig
+    echo -e "Virtual hosts:" >> .containerconfig
+    echo -e "http:                    \t\tapp.${VIRTUALHOSTNAME}.dev" >> .containerconfig
+    echo -e "mail:                    \t\tmail.${VIRTUALHOSTNAME}.dev" >> .containerconfig
+    case ${INCLUDEFTP} in
+        [yY][eE][sS]|[yY])
+            echo -e "ftp:                     \t\tftp.${VIRTUALHOSTNAME}.dev" >> .containerconfig
+            ;;
+        *)
+            ;;
+    esac
+    case ${INCLUDEPHPMYADMIN} in
+        [yY][eE][sS]|[yY])
+            echo -e "phpmyadmin:              \t\tapp.${VIRTUALHOSTNAME}.dev" >> .containerconfig
+            ;;
+        *)
+            ;;
+    esac
+    case ${INCLUDESOLR} in
+        [yY][eE][sS]|[yY])
+            echo -e "solr:                    \t\tsolr.${VIRTUALHOSTNAME}.dev" >> .containerconfig
+            ;;
+        *)
+            ;;
+    esac
+    case ${INCLUDEELASTICSEARCH} in
+        [yY][eE][sS]|[yY])
+            echo -e "elasticsearch:           \t\telasticsearch.${VIRTUALHOSTNAME}.dev" >> .containerconfig
+            ;;
+        *)
+            ;;
+    esac
     PROJECTID=$(cat ~/.dockercontainers | wc -l)
     PROJECTID="$(echo -e "${PROJECTID}" | tr -d '[:space:]')"
     echo -e "${GREEN}Port configuration complete!${NC}"
@@ -310,7 +364,7 @@ function writeDockerCompose {
     echo "      - etc/environment.yml" >> ${file}
     echo "      - etc/environment.development.yml" >> ${file}
     echo "    environment:" >> ${file}
-    echo "      - VIRTUAL_HOST=.app.boilerplate.docker" >> ${file}
+    echo "      - VIRTUAL_HOST=app.${VIRTUALHOSTNAME}.dev" >> ${file}
     echo "      - VIRTUAL_PORT=80" >> ${file}
     echo "      - POSTFIX_RELAYHOST=[mail]:1025" >> ${file}
     case ${SELECTEDDATABASE} in
@@ -358,7 +412,7 @@ function writeDockerCompose {
             echo "      - etc/environment.development.yml" >> ${file}
             echo "    environment:" >> ${file}
             echo "      - SOLR_STORAGE=/storage/solr/server-master/" >> ${file}
-            echo "      - VIRTUAL_HOST=solr.boilerplate.docker" >> ${file}
+            echo "      - VIRTUAL_HOST=solr.${VIRTUALHOSTNAME}.dev" >> ${file}
             echo "      - VIRTUAL_PORT=8983" >> ${file}
             ;;
         *)
@@ -379,7 +433,7 @@ function writeDockerCompose {
             echo "      - etc/environment.yml" >> ${file}
             echo "      - etc/environment.development.yml" >> ${file}
             echo "    environment:" >> ${file}
-            echo "      - VIRTUAL_HOST=elasticsearch.boilerplate.docker" >> ${file}
+            echo "      - VIRTUAL_HOST=elasticsearch.${VIRTUALHOSTNAME}.dev" >> ${file}
             echo "      - VIRTUAL_PORT=9200" >> ${file}
             ;;
         *)
@@ -423,7 +477,7 @@ function writeDockerCompose {
             echo "    ports:" >> ${file}
             echo "      - ${MAILPORT}:8025" >> ${file}
             echo "    environment:" >> ${file}
-            echo "      - VIRTUAL_HOST=mail.boilerplate.docker" >> ${file}
+            echo "      - VIRTUAL_HOST=mail.${VIRTUALHOSTNAME}.dev" >> ${file}
             echo "      - VIRTUAL_PORT=8025" >> ${file}
             ;;
         2)
@@ -431,7 +485,7 @@ function writeDockerCompose {
             echo "    container_name: mail_${PROJECTID}" >> ${file}
             echo "    image: schickling/mailcatcher" >> ${file}
             echo "    environment:" >> ${file}
-            echo "      - VIRTUAL_HOST=mail.boilerplate.docker" >> ${file}
+            echo "      - VIRTUAL_HOST=mail.${VIRTUALHOSTNAME}.dev" >> ${file}
             echo "      - VIRTUAL_PORT=1080" >> ${file}
             ;;
         3)
@@ -439,7 +493,7 @@ function writeDockerCompose {
             echo "    container_name: mail_${PROJECTID}" >> ${file}
             echo "      image: webdevops/mail-sandbox" >> ${file}
             echo "    environment:" >> ${file}
-            echo "      - VIRTUAL_HOST=mail.boilerplate.docker" >> ${file}
+            echo "      - VIRTUAL_HOST=mail.${VIRTUALHOSTNAME}.dev" >> ${file}
             echo "      - VIRTUAL_PORT=80" >> ${file}
             ;;
         *)
@@ -471,7 +525,7 @@ function writeDockerCompose {
             echo "      - mysql" >> ${file}
             echo "    environment:" >> ${file}
             echo "      - PMA_ARBITRARY=1" >> ${file}
-            echo "      - VIRTUAL_HOST=pma.boilerplate.docker" >> ${file}
+            echo "      - VIRTUAL_HOST=pma.${VIRTUALHOSTNAME}.dev" >> ${file}
             echo "      - VIRTUAL_PORT=80" >> ${file}
             echo "    volumes:" >> ${file}
             echo "      - /sessions" >> ${file}
@@ -535,9 +589,8 @@ function writeDockerfile {
             echo "COPY oh-my-zsh/.zshrc ~/.zshrc" >> ${file}
             echo "COPY oh-my-zsh/font/* /usr/share/fonts/truetype/*" >> ${file}
             echo "RUN fc-cache -f -v" >> ${file}
+            echo "RUN git clone git://github.com/joel-porquet/zsh-dircolors-solarized ~/.oh-my-zsh/custom/plugins/zsh-dircolors-solarized" >> ${file}
             echo "RUN chsh -s /bin/zsh" >> ${file}
-            echo "RUN git clone git://github.com/Anthony25/gnome-terminal-colors-solarized.git ~/.solarized" >> ${file}
-            echo "RUN bash -c \"~/.solarized/install.sh --scheme=dark --profile zsh --install-dircolors\"" >> ${file}
             echo "" >> ${file}
             ;;
         *)
