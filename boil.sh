@@ -300,7 +300,7 @@ function writeDockerCompose {
             ;;
     esac
     echo "    volumes_from:" >> ${file}
-    echo "      - storage" >> ${file}
+    echo "      - storage_${PROJECTID}" >> ${file}
     echo "    cap_add:" >> ${file}
     echo "      - SYS_PTRACE" >> ${file}
     echo "    privileged: true" >> ${file}
@@ -321,7 +321,7 @@ function writeDockerCompose {
             echo "    ports:" >> ${file}
             echo "      - ${DBPORT}:3306" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage" >> ${file}
+            echo "      - storage_${PROJECTID}" >> ${file}
             echo "    volumes:" >> ${file}
             echo "      - /tmp/debug/:/tmp/debug/" >> ${file}
             echo "    env_file:" >> ${file}
@@ -337,7 +337,7 @@ function writeDockerCompose {
             echo "    ports:" >> ${file}
             echo "      - ${DBPORT}:5432" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage" >> ${file}
+            echo "      - storage_${PROJECTID}" >> ${file}
             echo "    env_file:" >> ${file}
             echo "      - etc/environment.yml" >> ${file}
             echo "      - etc/environment.development.yml" >> ${file}
@@ -350,7 +350,7 @@ function writeDockerCompose {
             echo "    build:" >> ${file}
             echo "      context: docker/solr/" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage" >> ${file}
+            echo "      - storage_${PROJECTID}" >> ${file}
             echo "    env_file:" >> ${file}
             echo "      - etc/environment.yml" >> ${file}
             echo "      - etc/environment.development.yml" >> ${file}
@@ -372,7 +372,7 @@ function writeDockerCompose {
             echo "      - ${ELASTICSEARCHPORT1}:9200" >> ${file}
             echo "      - ${ELASTICSEARCHPORT2}:9300" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage" >> ${file}
+            echo "      - storage_${PROJECTID}" >> ${file}
             echo "    env_file:" >> ${file}
             echo "      - etc/environment.yml" >> ${file}
             echo "      - etc/environment.development.yml" >> ${file}
@@ -390,7 +390,7 @@ function writeDockerCompose {
             echo "    build:" >> ${file}
             echo "      context: docker/redis/" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage" >> ${file}
+            echo "      - storage_${PROJECTID}" >> ${file}
             echo "    env_file:" >> ${file}
             echo "      - etc/environment.yml" >> ${file}
             echo "      - etc/environment.development.yml" >> ${file}
@@ -405,7 +405,7 @@ function writeDockerCompose {
             echo "    build:" >> ${file}
             echo "      context: docker/memcached/" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage" >> ${file}
+            echo "      - storage_${PROJECTID}" >> ${file}
             echo "    env_file:" >> ${file}
             echo "      - etc/environment.yml" >> ${file}
             echo "      - etc/environment.development.yml" >> ${file}
@@ -450,7 +450,7 @@ function writeDockerCompose {
             echo "    build:" >> ${file}
             echo "      context: docker/vsftpd/" >> ${file}
             echo "    volumes_from:" >> ${file}
-            echo "      - storage" >> ${file}
+            echo "      - storage_${PROJECTID}" >> ${file}
             echo "    volumes:" >> ${file}
             echo "      - ./:/application/" >> ${file}
             echo "    env_file:" >> ${file}
@@ -482,7 +482,7 @@ function writeDockerCompose {
     echo "    build:" >> ${file}
     echo "      context: docker/storage/" >> ${file}
     echo "    volumes:" >> ${file}
-    echo "      - /storage" >> ${file}
+    echo "      - /storage_${PROJECTID}" >> ${file}
     echo -e "${GREEN}Written ${file}!${NC}"
 }
 
