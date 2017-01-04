@@ -30,6 +30,7 @@ function cleanup {
 #
 function setProjectName {
     read -r -p "Please set the projects name: " PROJECTNAME
+    #read -r -p "Please set the shortname (alpha-numerical, lowercase, unique): " PROJECTSHORTNAME
 }
 
 #
@@ -207,7 +208,7 @@ function setPorts {
             ;;
     esac
     echo -e "$PROJECTNAME\t\t-\t$HTTPPORT\t$FTPPORT\t$SSHPORT\t$DBPORT\t$MAILPORT\t$ELASTICSEARCHPORT1\t$ELASTICSEARCHPORT2" >> ~/.dockercontainers
-    PROJECTID=$(wc -l < "~/.dockercontainers")
+    PROJECTID=$(cat ~/.dockercontainers | wc -l)
     echo -e "${GREEN}Port configuration complete!${NC}"
 }
 
