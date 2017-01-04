@@ -498,7 +498,6 @@ function writeDockerfile {
     echo "" >> ${file}
     echo "ENV PROVISION_CONTEXT \"development\"" >> ${file}
     echo "" >> ${file}
-    echo "# Deploy scripts/configurations" >> ${file}
     echo "COPY etc/             /opt/docker/etc/" >> ${file}
     echo "COPY provision/       /opt/docker/provision/" >> ${file}
     echo "" >> ${file}
@@ -511,12 +510,10 @@ function writeDockerfile {
     case ${INSTALLGIT} in
         [yY][eE][sS]|[yY])
             GITINSTALLED=true
-            echo "# Install git" >> ${file}
             echo "RUN sudo apt-get -y install git-all" >> ${file}
             echo "" >> ${file}
             case ${INSTALLGITFLOW} in
                 [yY][eE][sS]|[yY])
-                    echo "# Install git-flow" >> ${file}
                     echo "RUN wget --no-check-certificate -q  https://raw.github.com/petervanderdoes/gitflow-avh/develop/contrib/gitflow-installer.sh && sudo bash gitflow-installer.sh install stable; rm gitflow-installer.sh" >> ${file}
                     echo "" >> ${file}
                     ;;
@@ -527,26 +524,20 @@ function writeDockerfile {
         *)
             ;;
     esac
-
     case ${INSTALLOHMYZSH} in
         [yY][eE][sS]|[yY])
             if [ "${GITINSTALLED}" = false ] ; then
-                echo "# Install git" >> ${file}
                 echo "RUN sudo apt-get install git-all" >> ${file}
                 echo "" >> ${file}
             fi
-            echo "# Install oh-my-zsh" >> ${file}
             echo "RUN sudo apt-get update && sudo apt-get -y install zsh" >> ${file}
             echo "RUN wget –no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O – | sh" >> ${file}
-            echo "RUN cp oh-my-zsh/.zshrc ~/.zshrc" >> ${file}
-            echo "RUN cp oh-my-zsh/font/* /usr/share/fonts/truetype/*" >> ${file}
+            echo "COPY oh-my-zsh/.zshrc ~/.zshrc" >> ${file}
+            echo "COPY oh-my-zsh/font/* /usr/share/fonts/truetype/*" >> ${file}
             echo "RUN fc-cache -f -v" >> ${file}
             echo "RUN chsh -s /bin/zsh" >> ${file}
-            echo "RUN git clone git://github.com/sigurdga/gnome-terminal-colors-solarized.git ~/.solarized" >> ${file}
-            echo "RUN THISDIR=\"$pwd\" >> ${file}
-            echo "RUN cd ~/.solarized" >> ${file}
-            echo "RUN ./solarize" >> ${file}
-            echo "RUN cd ${THISDIR}" >> ${file}
+            echo "RUN git clone git://github.com/Anthony25/gnome-terminal-colors-solarized.git ~/.solarized" >> ${file}
+            echo "RUN bash -c \"~/.solarized/install.sh --scheme=dark --profile zsh --install-dircolors\"" >> ${file}
             echo "" >> ${file}
             ;;
         *)
@@ -554,7 +545,6 @@ function writeDockerfile {
     esac
     case ${INSTALLCOMPOSER} in
         [yY][eE][sS]|[yY])
-            echo "# Install composer" >> ${file}
             echo "RUN php -r \"copy('https://getcomposer.org/installer', 'composer-setup.php');\"" >> ${file}
             echo "RUN php composer-setup.php" >> ${file}
             echo "RUN php -r \"unlink('composer-setup.php');\"" >> ${file}
@@ -565,27 +555,22 @@ function writeDockerfile {
             ;;
     esac
     if [ "${INSTALLNPM}" = true ] || [ "${INSTALLBOWER}" = true ] || [ "${INSTALLGULP}" = true ]; then
-        echo "# Install npm" >> ${file}
         echo "RUN sudo apt-get -y install nodejs" >> ${file}
         echo "RUN sudo apt-get -y install npm" >> ${file}
         echo "" >> ${file}
         NPMINSTALLED=true
     fi
     if [ "${INSTALLBOWER}" = true ]; then
-        echo "# Install bower" >> ${file}
         echo "RUN sudo npm install bower" >> ${file}
         echo "" >> ${file}
     fi
     if [ "${INSTALLGULP}" = true ]; then
-        echo "# Install gulp" >> ${file}
         echo "RUN sudo npm install gulp" >> ${file}
         echo "" >> ${file}
     fi
-    echo "# Activate ssh" >> ${file}
     echo "RUN mkdir -p /home/application/.ssh" >> ${file}
     echo "RUN /opt/docker/bin/control.sh service.enable ssh" >> ${file}
     echo "" >> ${file}
-    echo "# Configure volume/workdir" >> ${file}
     echo "RUN mkdir -p /app/" >> ${file}
     echo "WORKDIR /app/" >> ${file}
     echo "" >> ${file}

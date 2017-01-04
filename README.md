@@ -6,7 +6,12 @@ This is a TYPO3 docker boilerplate which will be configured through a step-by-st
 
 ## upcoming (WIP):
 
-~It also provides an option to setup a blank dummy [TYPO3 8.X instance](https://github.com/FinndropStudios/TYPO3-8.x-boilerplate).~
+<!---
+It also provides an option to setup a blank dummy [TYPO3 8.X instance](https://github.com/FinndropStudios/TYPO3-8.x-boilerplate).
+-->
+
+- include [TYPO3-8.x-boilerplate](https://github.com/FinndropStudios/TYPO3-8.x-boilerplate)
+- include virtualhosts functionality through reverse proxy
 
 ## Supports:
 
