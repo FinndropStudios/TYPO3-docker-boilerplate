@@ -293,7 +293,7 @@ function writeDockerCompose {
     echo "      - ./ssh:/home/application/.ssh" >> ${file}
     case ${INSTALLOHMYZSH} in
         [yY][eE][sS]|[yY])
-            echo "      - ./oh-my-zsh/:/app/oh-my-zsh/" >> ${file}
+            echo "      - ./oh-my-zsh/:/oh-my-zsh/" >> ${file}
             ;;
         *)
             ;;
