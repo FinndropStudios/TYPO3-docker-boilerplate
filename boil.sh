@@ -635,11 +635,12 @@ function writeDockerfile {
         NPMINSTALLED=true
     fi
     if [ "${INSTALLBOWER}" = true ]; then
-        echo "RUN sudo npm install bower" >> ${file}
+        echo "RUN sudo npm install bower -g" >> ${file}
         echo "" >> ${file}
     fi
     if [ "${INSTALLGULP}" = true ]; then
-        echo "RUN sudo npm install gulp" >> ${file}
+        echo "RUN sudo npm install gulp-cli -g" >> ${file}
+        echo "RUN sudo npm install gulp -g" >> ${file}
         echo "" >> ${file}
     fi
     echo "RUN mkdir -p /home/application/.ssh" >> ${file}
@@ -745,6 +746,7 @@ function main {
     if [ "${REBUILD}" = true ] ; then
         cleanup
         setProjectName
+        setVirtualHost
         selectOS
         selectWebServer
         selectDatabase

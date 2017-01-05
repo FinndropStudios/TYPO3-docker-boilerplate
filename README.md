@@ -15,9 +15,9 @@ It also provides an option to setup a blank dummy [TYPO3 8.X instance](https://g
 
 ## Todo:
 
-- Fix npm install
-- Fix bower install
-- Fix gulp install
+- ~~Fix npm install~~
+- ~~Fix bower install~~
+- ~~Fix gulp install~~
 
 ## Supports:
 
