@@ -607,10 +607,10 @@ function writeDockerfile {
             fi
             echo "RUN sudo apt-get update && sudo apt-get -y install zsh" >> ${file}
             echo "RUN wget –no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O – | sh" >> ${file}
-            echo "COPY oh-my-zsh/.zshrc ~/.zshrc" >> ${file}
+            echo "COPY oh-my-zsh/.zshrc /home/application/.zshrc" >> ${file}
             echo "COPY oh-my-zsh/font/* /usr/share/fonts/truetype/*" >> ${file}
             echo "RUN fc-cache -f -v" >> ${file}
-            echo "RUN git clone git://github.com/joel-porquet/zsh-dircolors-solarized ~/.oh-my-zsh/custom/plugins/zsh-dircolors-solarized" >> ${file}
+            echo "RUN git clone git://github.com/joel-porquet/zsh-dircolors-solarized /home/application/.oh-my-zsh/custom/plugins/zsh-dircolors-solarized" >> ${file}
             echo "RUN chsh -s /bin/zsh" >> ${file}
             echo "" >> ${file}
             ;;
