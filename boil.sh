@@ -629,8 +629,10 @@ function writeDockerfile {
             ;;
     esac
     if [ "${INSTALLNPM}" = true ] || [ "${INSTALLBOWER}" = true ] || [ "${INSTALLGULP}" = true ]; then
-        echo "RUN sudo apt-get -y install nodejs" >> ${file}
-        echo "RUN sudo apt-get -y install npm" >> ${file}
+        echo "RUN sudo apt-get -y install nodejs-legacy" >> ${file}
+        echo "RUN sudo apt-get -y install npm -g" >> ${file}
+        echo "RUN sudo npm install node-gyp -g" >> ${file}
+        echo "RUN sudo npm install npm-check-updates -g" >> ${file}
         echo "" >> ${file}
         NPMINSTALLED=true
     fi
@@ -667,7 +669,7 @@ function cloneTypo3Boilerplate {
             echo "DATABASEUSERPASSWORD=dev" >> ${file}
             echo "DATABASENAME=typo3" >> ${file}
             echo "DATABASEHOSTNAME=mysql" >> ${file}
-            echo "DATABASEHOSTPORT=" >> ${file}
+            echo "DATABASEPORT=" >> ${file}
             echo -e "${GREEN}TYPO3 boilerplate successfully cloned!${NC}"
             CLONEDTYPO3BOILERPLATE=true
             ;;
@@ -733,7 +735,7 @@ function main {
     clear
     echo -e ""
     echo -e "###############################################################################"
-    echo -e "${GREEN}Welcome to the typo3-docker-boilerplate!${NC}"
+    echo -e "${GREEN}Welcome to the TYPO3-docker-boilerplate!${NC}"
     echo -e "Please follow the instructions and provide the requested information when asked"
     echo -e "###############################################################################"
     echo -e ""
