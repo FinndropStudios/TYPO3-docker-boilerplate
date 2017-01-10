@@ -18,6 +18,7 @@ It also provides an option to setup a blank dummy [TYPO3 8.X instance](https://g
 - ~~Fix npm install~~
 - ~~Fix bower install~~
 - ~~Fix gulp install~~
+- Fix oh-my-zsh install
 
 ## Supports:
 

@@ -656,27 +656,35 @@ function writeDockerfile {
 # clone typo3-boilerplate repository into /app
 #
 function cloneTypo3Boilerplate {
-    #read -r -p $'\e[33mDo you want to clone the TYPO3 boilerplate?\e[0m [y/N] ' response
-    #case ${response} in
-    #    [yY][eE][sS]|[yY])
-    #        echo -e "Cloning TYPO3 boilerplate into /app"
-    #        git clone git@github.com:FinndropStudios/TYPO3-8.x-boilerplate.git app
-    #        touch app/dockermode
-    #        file=app/ingredients/database.sh
-    #        echo "DATABASEUSERNAME=dev" >> ${file}
-    #        echo "DATABASEUSERPASSWORD=dev" >> ${file}
-    #        echo "DATABASENAME=typo3" >> ${file}
-    #        echo "DATABASEHOSTNAME=mysql" >> ${file}
-    #        echo "DATABASEHOSTPORT=" >> ${file}
-    #        echo -e "${GREEN}TYPO3 boilerplate successfully cloned!${NC}"
-    #        CLONEDTYPO3BOILERPLATE=true
-    #        ;;
-    #    *)
-            mkdir app app/web
-            echo "<?php" >> app/web/index.php
-            echo "phpinfo();" >> app/web/index.php
-    #        ;;
-    #esac
+    read -r -p $'\e[33mDo you want to clone the TYPO3 boilerplate?\e[0m [y/N] ' response
+    case ${response} in
+        [yY][eE][sS]|[yY])
+            echo -e "Cloning TYPO3 boilerplate into /app"
+            git clone git@github.com:FinndropStudios/TYPO3-8.x-boilerplate.git app
+            touch app/dockermode
+            file=app/ingredients/database.sh
+            echo "DATABASEUSERNAME=dev" >> ${file}
+            echo "DATABASEUSERPASSWORD=dev" >> ${file}
+            echo "DATABASENAME=typo3" >> ${file}
+            echo "DATABASEHOSTNAME=mysql" >> ${file}
+            echo "DATABASEHOSTPORT=" >> ${file}
+            echo -e "${GREEN}TYPO3 boilerplate successfully cloned!${NC}"
+            CLONEDTYPO3BOILERPLATE=true
+            ;;
+        *)
+            if [ ! -d "app" ]; then
+                mkdir app
+            fi
+
+            if [ ! -d "app/web" ]; then
+                mkdir app/web
+            fi
+            if [ ! -e "app/web/index.php" ]; then
+                echo "<?php" >> app/web/index.php
+                echo "phpinfo();" >> app/web/index.php
+            fi
+            ;;
+    esac
 }
 
 #
