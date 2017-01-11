@@ -7,14 +7,15 @@ It also provides an option to setup a fresh dummy [TYPO3 8.X instance](https://g
 
 ## upcoming (WIP):
 
-- include virtualhosts functionality through reverse proxy
+- [x] [TYPO3 8.X instance](https://github.com/FinndropStudios/TYPO3-8.x-boilerplate)
+- [ ] include virtualhosts functionality through reverse proxy
 
 ## Todo:
 
-- ~~Fix npm install~~
-- ~~Fix bower install~~
-- ~~Fix gulp install~~
-- Fix oh-my-zsh install
+- [x] Fix npm install
+- [x] Fix bower install
+- [x] Fix gulp install
+- [ ] Fix oh-my-zsh install
 
 ## Supports:
 
@@ -49,13 +50,13 @@ Run `./boil.sh` to start the configuration of your container. Follow the steps a
 
 ### Docker related
 
-- `ssh -p $SSHPORT application@localhost` Login to your container using ssh
+- `ssh -p $SSHPORT application@localhost` login to your container using ssh
 - `docker-compose up -d` run your container
 - `docker-compose up -d --build` rebuild your container
 - `docker-compose stop` stop your container
 - `docker rm $CONTAINERNAME` remove container
 - `docker rmi $CONTAINERNAME` remove image
-- `docker ps -a` show running containers
+- `docker ps -a` show all containers on your host
 
 ### npm/node related
 
