@@ -64,7 +64,7 @@ Run `./boil.sh` to start the configuration of your container. Follow the steps a
 - `ncu -a/--upgradeAll` updates node modules dependencies *(handle with care)*
 - `ncu -m bower -u` updates bower packages *(handle with care)*
 
-*We strongle recommend to check manually which updates to perform. At least in already set up environments/projects!*
+*We strongly recommend to check manually which updates to perform. At least in already set up environments/projects!*
 
 ## Further information
 
