@@ -49,7 +49,9 @@ It also provides an option to setup a blank dummy [TYPO3 8.X instance](https://g
 Just download and unzip or clone this repository. Open your favourite Terminal and navigate to the boilerplate's folder.
 Run `./boil.sh` to start the configuration of your container. Follow the steps and you're done.
 
-## Useful commands
+## Useful commands (on host terminal)
+
+### Docker related
 
 - `ssh -p $SSHPORT application@localhost` Login to your container using ssh
 - `docker-compose up -d` run your container
@@ -58,6 +60,14 @@ Run `./boil.sh` to start the configuration of your container. Follow the steps a
 - `docker rm $CONTAINERNAME` remove container
 - `docker rmi $CONTAINERNAME` remove image
 - `docker ps -a` show running containers
+
+### npm/node related
+
+- `ncu -u` updates node modules *(handle with care)*
+- `ncu -a/--upgradeAll` updates node modules dependencies *(handle with care)*
+- `ncu -m bower -u` updates bower packages *(handle with care)*
+
+*We strongle recommend to check manually which updates to perform. At least in already set up environments/projects!*
 
 ## Further information
 
