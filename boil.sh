@@ -630,7 +630,7 @@ function writeDockerfile {
     esac
     if [ "${INSTALLNPM}" = true ] || [ "${INSTALLBOWER}" = true ] || [ "${INSTALLGULP}" = true ]; then
         echo "RUN sudo apt-get -y install nodejs-legacy" >> ${file}
-        echo "RUN sudo apt-get -y install npm -g" >> ${file}
+        echo "RUN sudo apt-get -y install npm" >> ${file}
         echo "RUN sudo npm install node-gyp -g" >> ${file}
         echo "RUN sudo npm install npm-check-updates -g" >> ${file}
         echo "" >> ${file}
